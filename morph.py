@@ -29,7 +29,7 @@ def add_alpha_channel(image, alpha_channel):
     image_with_alpha = cv2.merge((image, alpha_channel))
     return image_with_alpha
 
-def random_points(image, num_points=10):
+def random_points(image, num_points=100):
     h, w = image.shape[:2]
     return [(random.randint(0, w), random.randint(0, h)) for _ in range(num_points)]
 
@@ -39,7 +39,7 @@ def morph_images(img1, img2, alpha):
     morphed_img = (1 - alpha) * img1 + alpha * img2
     return np.uint8(morphed_img)
 
-def create_morph_video(images, output_video, fps=60, morph_time=3, hold_time=5):
+def create_morph_video(images, output_video, fps=60, morph_time=7, hold_time=1):
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
     out = cv2.VideoWriter(output_video, fourcc, fps, (1920, 1080))
 
