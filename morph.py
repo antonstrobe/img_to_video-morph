@@ -10,22 +10,13 @@ def resize_and_blur_background(image, target_size=(1920, 1080)):
     scale = min(target_size[0] / w, target_size[1] / h)
     new_size = (int(w * scale), int(h * scale))
     resized = cv2.resize(image, new_size, interpolation=cv2.INTER_LINEAR)
-
-    # Создаем размытый фон
     blurred_background = cv2.GaussianBlur(resized, (0, 0), 100)
-
-    # Вычисляем размеры для центрирования изображения
     delta_w = target_size[0] - new_size[0]
     delta_h = target_size[1] - new_size[1]
     top, bottom = delta_h // 2, delta_h - (delta_h // 2)
     left, right = delta_w // 2, delta_w - (delta_w // 2)
-
-    # Добавляем размытый фон вокруг основного изображения
-    bordered = cv2.copyMakeBorder(blurred_background, top, bottom, left, right, cv2.BORDER_CONSTANT, value=[0, 0, 0])
-
-    # Вставляем неразмытое изображение в центр
+    bordered = cv2.copyMakeBorder(blurred_background, top, bottom, left, right, cv2.BORDER_REFLECT)
     bordered[top:top+new_size[1], left:left+new_size[0]] = resized
-
     return bordered
 
 def create_alpha_channel(image):
